@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Sensor Data</title>
+    <meta name="description" content="A basic example of using AngluarJS 1.6 to load external json data">
+    <meta name="author" content="Jesse Knowles">
+</head>
+
+<body style="text-align: center">
+    <h1>Sensor Data</h1>
+
+    <div ng-app="SensorDataApp">
+        <div ng-controller="SensorDataCtrl">
+            <form add-sensor-form>
+                <fieldset>
+                    <legend>Add a New Sensor</legend>
+                    <label style="margin-right: 15px">
+                        Sensor: 
+                        <select ng-model="sensor" ng-options="type.name for type in getSensors()"></select>
+                    </label>
+                    <label style="margin-right: 15px">
+                        Time: 
+                        <input type="text" ng-model="time" placeholder="milliseconds" />
+                    </label>
+                    <label style="margin-right: 15px">
+                        Value: 
+                        <input type="text" ng-model="temp" placeholder="celcius or humidity" />
+                    </label>
+                    <button ng-click="onAdd()">Add</button>
+                </fieldset>
+            </form>
+
+            <br /><br />
+
+            <!-- this could have been a directive -->
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>UTC Offset</th>
+                        <th>Sensor</th>
+                        <th>Temperature (°F)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in sensorData" ng-style="row.highest ? {'background-color' : 'yellow'} : ''">
+                        <td>{{row.time | date:'MM/dd/yyyy'}}</td>
+                        <td>{{row.time | date:'hh:mm:ss'}}</td><!-- Requirement had this as mm:ss but all rows show that as 00:00, so I added hours -->
+                        <td>{{row.time | utcDate}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.value | fahrenheit}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="angular/app/sensor-data.js"></script>
+</body>
+</html>
